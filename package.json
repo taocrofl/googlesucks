@@ -1,0 +1,21 @@
+{
+  "name": "googlesucks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "gm": "^1.23.0",
+    "mongodb": "^2.2.24",
+    "phantom": "^4.0.0",
+    "rimraf": "^2.6.1"
+  }
+}
