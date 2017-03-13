@@ -76,7 +76,7 @@ function _do_query(query, search_engine, dir) {
     return _page.open(url + query);
   }).then(status => {
     return _page.render(dir + '/' + search_engine + '.png');
-  }).then(_ => {
+  }).then(() => {
     _page.close();
     _ph.exit();
   });
@@ -94,31 +94,38 @@ function do_query(query, cb) {
   }
   _promises.push(_do_query(query, 'google', dir), _do_query(query, 'duckduckgo', dir));
 
-  Promise.all(_promises).then(_ => {
+  Promise.all(_promises).then(() => {
+      console.log('printing directory contents of /myapp/' + dir);
+      return fs.readdirAsync('/myapp/' + dir);
+    })
+    .each(f => {
+      console.log(f);
+    })
+    .then(() => {
       return gm('/myapp/' + dir + '/google.png')
         .append('/myapp/' + dir + '/duckduckgo.png', true)
         .writeAsync('/myapp/' + dir + '/new.png');
     })
-    .then(_ => {
+    .then(() => {
       console.log('calling res.sendFile()');
       return cb.sendFileAsync('/myapp/' + dir + '/new.png');
     })
-    .then(_ => {
+    .then(() => {
       console.log('renaming file');
       return fs.renameAsync('/myapp/' + dir + '/new.png', '/myapp/' + dir + '.png');
     })
-    .then(_ => {
+    .then(() => {
       console.log('adding mongo entry');
       return db.collection(MONGO_DB).insertAsync([{
         query: query,
         guid: dir
       }]);
     })
-    .then(_ => {
+    .then(() => {
       console.log('removing dir');
       return rimrafAsync(dir);
     })
-    .then(_ => console.log('removed directory ' + dir))
+    .then(() => console.log('removed directory ' + dir))
     .catch(e => {
       console.log(e);
       // clean up
