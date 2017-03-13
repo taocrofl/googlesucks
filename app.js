@@ -79,6 +79,8 @@ function _do_query(query, search_engine, dir) {
   }).then(() => {
     _page.close();
     _ph.exit();
+  }).catch(e => {
+    console.log(e);
   });
 }
 
